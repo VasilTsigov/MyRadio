@@ -11,25 +11,25 @@ val RADIO_STATIONS = listOf(
     RadioStation(
         id = 1,
         name = "BTV Radio",
-        streamUrl = "https://stream.btvradio.bg/btvradio.mp3",
+        streamUrl = "https://cdn.bweb.bg/radio/btv-radio.mp3",
         description = "bTV Radio"
     ),
     RadioStation(
         id = 2,
         name = "Nova Play",
-        streamUrl = "https://stream.nova.bg/novaplay.mp3",
+        streamUrl = "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_NOVAAAC_H.aac",
         description = "Nova Play"
     ),
     RadioStation(
         id = 3,
         name = "Horizont (BNR)",
-        streamUrl = "https://icecast.bgnc.net/horizont.mp3",
+        streamUrl = "https://lb-hls.cdn.bg/2032/fls/Horizont.stream/playlist.m3u8",
         description = "Bulgarian National Radio – Horizont"
     ),
     RadioStation(
         id = 4,
         name = "Hristo Botev (BNR)",
-        streamUrl = "https://icecast.bgnc.net/hristobotev.mp3",
+        streamUrl = "https://lb-hls.cdn.bg/2032/fls/HrBotev.stream/playlist.m3u8",
         description = "Bulgarian National Radio – Hristo Botev"
     )
 )

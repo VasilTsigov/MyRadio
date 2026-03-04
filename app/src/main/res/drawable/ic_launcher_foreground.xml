@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Radio tower -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,30 L54,78 M44,42 Q54,36 64,42 M38,34 Q54,24 70,34 M32,26 Q54,12 76,26" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M47,78 L61,78 L58,65 L50,65 Z" />
+</vector>
