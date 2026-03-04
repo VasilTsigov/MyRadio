@@ -6,11 +6,13 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionCommand
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,11 +30,16 @@ class MainActivity : AppCompatActivity() {
     private val controller get() = if (controllerFuture.isDone) controllerFuture.get() else null
 
     private lateinit var adapter: StationAdapter
+    private lateinit var repository: StationRepository
     private var currentStation: RadioStation? = null
 
     private val notifPermLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { /* ignore result, app still works without notification */ }
+
+    private val locationPermLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { startStationDiscovery() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,8 +54,42 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        repository = StationRepository(this)
         setupRecyclerView()
         setupNowPlayingBar()
+
+        if (savedInstanceState == null) {
+            val fineGranted = ContextCompat.checkSelfPermission(
+                this, android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+            val coarseGranted = ContextCompat.checkSelfPermission(
+                this, android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+
+            if (fineGranted || coarseGranted) {
+                startStationDiscovery()
+            } else {
+                locationPermLauncher.launch(
+                    arrayOf(
+                        android.Manifest.permission.ACCESS_FINE_LOCATION,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                )
+            }
+        }
+    }
+
+    private fun startStationDiscovery() {
+        val loadingIndicator = findViewById<ProgressBar>(R.id.loadingIndicator)
+        loadingIndicator.visibility = View.VISIBLE
+        lifecycleScope.launch {
+            val discovered = repository.fetchNearbyStations(RADIO_STATIONS.toList())
+            if (discovered.isNotEmpty()) {
+                RADIO_STATIONS.addAll(discovered)
+                adapter.updateStations(discovered)
+            }
+            loadingIndicator.visibility = View.GONE
+        }
     }
 
     private fun setupRecyclerView() {

@@ -7,7 +7,7 @@ data class RadioStation(
     val description: String
 )
 
-val RADIO_STATIONS = listOf(
+val RADIO_STATIONS = mutableListOf(
     RadioStation(
         id = 1,
         name = "BTV Radio",

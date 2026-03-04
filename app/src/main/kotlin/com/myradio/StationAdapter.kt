@@ -8,24 +8,31 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class StationAdapter(
-    private val stations: List<RadioStation>,
+    stations: List<RadioStation>,
     private val onPlayClick: (RadioStation) -> Unit,
     private val onStopClick: (RadioStation) -> Unit
 ) : RecyclerView.Adapter<StationAdapter.ViewHolder>() {
 
+    private val stationList: MutableList<RadioStation> = stations.toMutableList()
     private var playingId: Int = -1
 
     fun setPlayingStation(id: Int) {
         val old = playingId
         playingId = id
-        stations.indexOfFirst { it.id == old }.takeIf { it >= 0 }?.let { notifyItemChanged(it) }
-        stations.indexOfFirst { it.id == id }.takeIf { it >= 0 }?.let { notifyItemChanged(it) }
+        stationList.indexOfFirst { it.id == old }.takeIf { it >= 0 }?.let { notifyItemChanged(it) }
+        stationList.indexOfFirst { it.id == id }.takeIf { it >= 0 }?.let { notifyItemChanged(it) }
     }
 
     fun clearPlaying() {
         val old = playingId
         playingId = -1
-        stations.indexOfFirst { it.id == old }.takeIf { it >= 0 }?.let { notifyItemChanged(it) }
+        stationList.indexOfFirst { it.id == old }.takeIf { it >= 0 }?.let { notifyItemChanged(it) }
+    }
+
+    fun updateStations(newStations: List<RadioStation>) {
+        val insertStart = stationList.size
+        stationList.addAll(newStations)
+        notifyItemRangeInserted(insertStart, newStations.size)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,12 +42,12 @@ class StationAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val station = stations[position]
+        val station = stationList[position]
         val isPlaying = station.id == playingId
         holder.bind(station, isPlaying, onPlayClick, onStopClick)
     }
 
-    override fun getItemCount() = stations.size
+    override fun getItemCount() = stationList.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val nameText: TextView = itemView.findViewById(R.id.stationName)
