@@ -4,11 +4,75 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Radio tower -->
+
+    <!-- Antenna -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M76,46 L80,24" />
+
+    <!-- Radio body (rounded rectangle) -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M54,30 L54,78 M44,42 Q54,36 64,42 M38,34 Q54,24 70,34 M32,26 Q54,12 76,26" />
+        android:pathData="M24,46 L84,46 Q88,46 88,50 L88,80 Q88,84 84,84 L24,84 Q20,84 20,80 L20,50 Q20,46 24,46 Z" />
+
+    <!-- Speaker circle (blue fill matching background) -->
     <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M47,78 L61,78 L58,65 L50,65 Z" />
+        android:fillColor="#1565C0"
+        android:pathData="M43,65 m-14,0 a14,14 0 1,0 28,0 a14,14 0 1,0 -28,0" />
+
+    <!-- Speaker grill horizontal lines -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:pathData="M33,59 L53,59 M31,63 L55,63 M31,67 L55,67 M33,71 L53,71" />
+
+    <!-- Speaker cone (inner circle) -->
+    <path
+        android:fillColor="#4A90D9"
+        android:pathData="M43,65 m-4,0 a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0" />
+
+    <!-- Panel divider line -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#DDDDDD"
+        android:strokeWidth="1"
+        android:pathData="M62,48 L62,82" />
+
+    <!-- Frequency display window -->
+    <path
+        android:fillColor="#BBDEFB"
+        android:pathData="M65,51 L86,51 L86,63 L65,63 Z" />
+
+    <!-- Frequency needle -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#1565C0"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M75,51 L75,63" />
+
+    <!-- Knob 1 outer -->
+    <path
+        android:fillColor="#AAAAAA"
+        android:pathData="M70,73 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0" />
+
+    <!-- Knob 1 inner -->
+    <path
+        android:fillColor="#DDDDDD"
+        android:pathData="M70,73 m-2.5,0 a2.5,2.5 0 1,0 5,0 a2.5,2.5 0 1,0 -5,0" />
+
+    <!-- Knob 2 outer -->
+    <path
+        android:fillColor="#AAAAAA"
+        android:pathData="M81,73 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0" />
+
+    <!-- Knob 2 inner -->
+    <path
+        android:fillColor="#DDDDDD"
+        android:pathData="M81,73 m-2.5,0 a2.5,2.5 0 1,0 5,0 a2.5,2.5 0 1,0 -5,0" />
+
 </vector>
