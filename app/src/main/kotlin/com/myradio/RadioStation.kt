@@ -31,5 +31,17 @@ val RADIO_STATIONS = mutableListOf(
         name = "Hristo Botev (BNR)",
         streamUrl = "https://lb-hls.cdn.bg/2032/fls/HrBotev.stream/playlist.m3u8",
         description = "Bulgarian National Radio – Hristo Botev"
+    ),
+    RadioStation(
+        id = 5,
+        name = "Nova News",
+        streamUrl = "https://radio.nova.bg/novanews.aac",
+        description = "Nova News Radio – 95.7 FM"
+    ),
+    RadioStation(
+        id = 6,
+        name = "БНТ 1",
+        streamUrl = "TODO",
+        description = "Българска национална телевизия"
     )
 )
