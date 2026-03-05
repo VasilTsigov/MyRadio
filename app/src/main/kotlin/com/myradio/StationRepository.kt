@@ -1,8 +1,6 @@
 package com.myradio
 
 import android.content.Context
-import android.location.Geocoder
-import android.location.LocationManager
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -13,46 +11,13 @@ import java.util.Locale
 
 class StationRepository(private val context: Context) {
 
-    private fun getLastKnownLocation(): Pair<Double, Double>? {
-        val lm = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return try {
-            val providers = listOf(LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER)
-            for (provider in providers) {
-                @Suppress("MissingPermission")
-                val loc = lm.getLastKnownLocation(provider)
-                if (loc != null) return Pair(loc.latitude, loc.longitude)
-            }
-            null
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-    private fun countryCodeFromLocation(lat: Double, lon: Double): String? {
-        return try {
-            @Suppress("DEPRECATION")
-            val addresses = Geocoder(context, Locale.ENGLISH).getFromLocation(lat, lon, 1)
-            addresses?.firstOrNull()?.countryCode
-        } catch (e: Exception) {
-            null
-        }
-    }
-
     suspend fun fetchNearbyStations(existing: List<RadioStation>): List<RadioStation> =
         withContext(Dispatchers.IO) {
             try {
-                val location = getLastKnownLocation()
-                Log.d(TAG, "Location: $location")
-
-                val countryCode = if (location != null) {
-                    countryCodeFromLocation(location.first, location.second)
-                        ?: Locale.getDefault().country
-                } else {
-                    Locale.getDefault().country
-                }
+                val countryCode = Locale.getDefault().country.ifEmpty { "BG" }
                 Log.d(TAG, "Country code: $countryCode")
 
-                val urlString = "https://de1.api.radio-browser.info/json/stations/search" +
+                val urlString = "https://all.api.radio-browser.info/json/stations/search" +
                     "?countrycode=$countryCode&hidebroken=true&order=votes&reverse=true&limit=30"
 
                 Log.d(TAG, "Fetching: $urlString")

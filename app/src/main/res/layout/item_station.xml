@@ -38,10 +38,12 @@
 
     <ImageButton
         android:id="@+id/btnPlay"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_play"
+        android:scaleType="fitCenter"
+        android:padding="8dp"
         android:contentDescription="Play" />
 
 </LinearLayout>

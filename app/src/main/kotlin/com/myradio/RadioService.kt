@@ -42,6 +42,13 @@ class RadioService : MediaSessionService() {
         return mediaSession
     }
 
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        // Keep the service running if audio is playing; stop only when idle
+        if (!player.isPlaying) {
+            stopSelf()
+        }
+    }
+
     override fun onDestroy() {
         mediaSession?.run {
             player.release()

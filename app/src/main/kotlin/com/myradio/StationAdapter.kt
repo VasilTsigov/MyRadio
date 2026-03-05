@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 class StationAdapter(
     stations: List<RadioStation>,
     private val onPlayClick: (RadioStation) -> Unit,
-    private val onStopClick: (RadioStation) -> Unit
+    private val onStopClick: () -> Unit
 ) : RecyclerView.Adapter<StationAdapter.ViewHolder>() {
 
     private val stationList: MutableList<RadioStation> = stations.toMutableList()
@@ -58,16 +58,18 @@ class StationAdapter(
             station: RadioStation,
             isPlaying: Boolean,
             onPlayClick: (RadioStation) -> Unit,
-            onStopClick: (RadioStation) -> Unit
+            onStopClick: () -> Unit
         ) {
             nameText.text = station.name
             descText.text = station.description
             if (isPlaying) {
                 playBtn.setImageResource(R.drawable.ic_stop)
-                playBtn.setOnClickListener { onStopClick(station) }
+                playBtn.setOnClickListener { onStopClick() }
+                itemView.setOnClickListener { onStopClick() }
             } else {
                 playBtn.setImageResource(R.drawable.ic_play)
                 playBtn.setOnClickListener { onPlayClick(station) }
+                itemView.setOnClickListener { onPlayClick(station) }
             }
         }
     }

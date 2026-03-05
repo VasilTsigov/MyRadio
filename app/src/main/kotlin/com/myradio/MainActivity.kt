@@ -37,10 +37,6 @@ class MainActivity : AppCompatActivity() {
         ActivityResultContracts.RequestPermission()
     ) { /* ignore result, app still works without notification */ }
 
-    private val locationPermLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { startStationDiscovery() }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -59,23 +55,7 @@ class MainActivity : AppCompatActivity() {
         setupNowPlayingBar()
 
         if (savedInstanceState == null) {
-            val fineGranted = ContextCompat.checkSelfPermission(
-                this, android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-            val coarseGranted = ContextCompat.checkSelfPermission(
-                this, android.Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-
-            if (fineGranted || coarseGranted) {
-                startStationDiscovery()
-            } else {
-                locationPermLauncher.launch(
-                    arrayOf(
-                        android.Manifest.permission.ACCESS_FINE_LOCATION,
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION
-                    )
-                )
-            }
+            startStationDiscovery()
         }
     }
 
@@ -121,8 +101,22 @@ class MainActivity : AppCompatActivity() {
         controllerFuture = MediaController.Builder(this, sessionToken).buildAsync()
         controllerFuture.addListener({
             val ctrl = controller ?: return@addListener
+            // Restore playing state after screen rotation
+            if (currentStation == null) {
+                val uri = ctrl.currentMediaItem?.localConfiguration?.uri?.toString()
+                if (uri != null) {
+                    val station = RADIO_STATIONS.find { it.streamUrl == uri }
+                    if (station != null) {
+                        currentStation = station
+                        adapter.setPlayingStation(station.id)
+                    }
+                }
+            }
             ctrl.addListener(object : Player.Listener {
                 override fun onIsPlayingChanged(isPlaying: Boolean) {
+                    updateNowPlayingBar()
+                }
+                override fun onPlaybackStateChanged(playbackState: Int) {
                     updateNowPlayingBar()
                 }
             })
@@ -161,18 +155,9 @@ class MainActivity : AppCompatActivity() {
         val nowPlayingBar = findViewById<View>(R.id.nowPlayingBar)
         val nowPlayingText = findViewById<TextView>(R.id.nowPlayingText)
         val station = currentStation
-        val isPlaying = controller?.isPlaying == true || controller?.playbackState == Player.STATE_BUFFERING
-
-        if (station != null && isPlaying) {
-            nowPlayingBar.visibility = View.VISIBLE
-            nowPlayingText.text = station.name
-        } else if (station != null && controller?.playbackState == Player.STATE_IDLE) {
-            nowPlayingBar.visibility = View.GONE
-        } else if (station != null) {
-            nowPlayingBar.visibility = View.VISIBLE
-            nowPlayingText.text = station.name
-        } else {
-            nowPlayingBar.visibility = View.GONE
-        }
+        val playbackState = controller?.playbackState
+        val visible = station != null && playbackState != null && playbackState != Player.STATE_IDLE
+        nowPlayingBar.visibility = if (visible) View.VISIBLE else View.GONE
+        if (visible) nowPlayingText.text = station!!.name
     }
 }

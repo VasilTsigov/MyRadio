@@ -3,4 +3,9 @@
     <style name="Theme.MyRadio" parent="Theme.Material3.DayNight">
         <item name="colorPrimary">@color/colorPrimary</item>
     </style>
+
+    <style name="Theme.MyRadio.Splash" parent="Theme.MyRadio">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
 </resources>

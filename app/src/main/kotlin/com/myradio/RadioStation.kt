@@ -16,9 +16,9 @@ val RADIO_STATIONS = mutableListOf(
     ),
     RadioStation(
         id = 2,
-        name = "Nova Play",
-        streamUrl = "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_NOVAAAC_H.aac",
-        description = "Nova Play"
+        name = "Nova News",
+        streamUrl = "https://radio.nova.bg/novanews.aac",
+        description = "Nova News Radio – 95.7 FM"
     ),
     RadioStation(
         id = 3,
@@ -34,14 +34,8 @@ val RADIO_STATIONS = mutableListOf(
     ),
     RadioStation(
         id = 5,
-        name = "Nova News",
-        streamUrl = "https://radio.nova.bg/novanews.aac",
-        description = "Nova News Radio – 95.7 FM"
-    ),
-    RadioStation(
-        id = 6,
-        name = "БНТ 1",
-        streamUrl = "TODO",
-        description = "Българска национална телевизия"
+        name = "Nova Play",
+        streamUrl = "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO_NOVAAAC_H.aac",
+        description = "Nova Play"
     )
 )
