@@ -13,3 +13,10 @@ captures/
 *.keystore
 .claude/
 build_output.txt
+
+# Xcode
+*.xcuserstate
+xcuserdata/
+DerivedData/
+*.xccheckout
+*.moved-aside
